@@ -7,9 +7,11 @@
     "dev": "vite",
     "tunnel": "vk-tunnel --insecure=1 --http-protocol=http --ws-protocol=ws --host=localhost --port=5173 --timeout=5000",
     "build": "vite build",
-    "deploy": "vite build && bun --bun x vk-miniapps-deploy"
+    "deploy": "vite build && npx vk-miniapps-deploy"
   },
   "dependencies": {
+    "@number-flow/react": "^0.3.1",
+    "framer-motion": "^11.11.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -28,5 +30,6 @@
     "tailwindcss": "^3.4.14",
     "typescript": "^5.2.2",
     "vite": "^5.1.0"
-  }
+  },
+  "homepage": "."
 }
