@@ -1,3 +1,19 @@
+import { useState } from "react"
+
 export const App = () => {
-  return "Hello"
+  const [count, setCount] = useState(0)
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button
+        type={"button"}
+        onClick={() => {
+          setCount((prev) => prev + 1)
+        }}
+      >
+        Click
+      </button>
+    </div>
+  )
 }
