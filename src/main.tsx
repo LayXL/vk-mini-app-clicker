@@ -28,5 +28,5 @@ bridge.send("VKWebAppInit").then(() => {
 })
 
 setTimeout(() => {
-  render()
+  if (!isVK) render()
 }, 500)

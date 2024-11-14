@@ -1,5 +1,5 @@
-import { useAddCounterValueMutation } from "@/hooks/useAddCounterValueMutation.ts"
 import { useCounterValueQuery } from "@/hooks/useCounterValueQuery.ts"
+import { useSetCounterValueMutation } from "@/hooks/useSetCounterValueMutation.ts"
 import { Coin } from "@/ui/coin.tsx"
 import { Counter } from "@/ui/counter.tsx"
 import { useQueryClient } from "@tanstack/react-query"
@@ -10,7 +10,7 @@ export const App = () => {
   const queryClient = useQueryClient()
 
   const counterValueQuery = useCounterValueQuery()
-  const addCounterValueMutation = useAddCounterValueMutation({
+  const addCounterValueMutation = useSetCounterValueMutation({
     onMutate: () => {
       queryClient.setQueryData(
         ["storage", "counter"],
@@ -40,7 +40,7 @@ export const App = () => {
 
       <Coin
         onClick={() => {
-          addCounterValueMutation.mutate()
+          addCounterValueMutation.mutate((counterValueQuery.data ?? 0) + 1)
 
           void bridge.send("VKWebAppTapticSelectionChanged").catch(() => {})
 
