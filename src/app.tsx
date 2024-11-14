@@ -1,10 +1,23 @@
+import { useAddCounterValueMutation } from "@/hooks/useAddCounterValueMutation.ts"
+import { useCounterValueQuery } from "@/hooks/useCounterValueQuery.ts"
+import { Coin } from "@/ui/coin.tsx"
+import { Counter } from "@/ui/counter.tsx"
+import { useQueryClient } from "@tanstack/react-query"
 import bridge from "@vkontakte/vk-bridge"
-import { useEffect, useRef, useState } from "react"
-import { Coin } from "./ui/coin.tsx"
-import { Counter } from "./ui/counter.tsx"
+import { useEffect, useRef } from "react"
 
 export const App = () => {
-  const [count, setCount] = useState(0)
+  const queryClient = useQueryClient()
+
+  const counterValueQuery = useCounterValueQuery()
+  const addCounterValueMutation = useAddCounterValueMutation({
+    onMutate: () => {
+      queryClient.setQueryData(
+        ["storage", "counter"],
+        (prev: number) => (prev ?? 0) + 1
+      )
+    },
+  })
 
   const musicRef = useRef<HTMLAudioElement>(null)
 
@@ -22,20 +35,20 @@ export const App = () => {
       </audio>
 
       <div className={"-mt-[122px]"}>
-        <Counter value={count} />
+        <Counter value={counterValueQuery.data} />
       </div>
 
       <Coin
         onClick={() => {
-          // noinspection JSIgnoredPromiseFromCall
-          bridge.send("VKWebAppTapticSelectionChanged")
-          setCount((prev) => prev + 1)
+          void bridge.send("VKWebAppTapticSelectionChanged")
 
-          if (count === 25 && musicRef.current) {
+          addCounterValueMutation.mutate()
+
+          if (counterValueQuery.data === 25 && musicRef.current) {
             musicRef.current.pause()
             musicRef.current.currentTime = 0
             musicRef.current.muted = false
-            musicRef.current.play()
+            void musicRef.current.play()
           }
         }}
       />
