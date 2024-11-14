@@ -1,4 +1,4 @@
-import { isIframe } from "@/lib/isIframe.ts"
+import { isVK } from "@/main"
 import bridge from "@vkontakte/vk-bridge"
 import superjson from "superjson"
 
@@ -7,7 +7,7 @@ export const getStorageValue = async <T>(
   defaultValue?: T
 ): Promise<T | undefined> => {
   try {
-    if (isIframe()) {
+    if (isVK) {
       const data = await bridge.send("VKWebAppStorageGet", { keys: [key] })
       const value = data.keys[0].value
 
