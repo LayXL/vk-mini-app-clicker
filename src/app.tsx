@@ -40,9 +40,9 @@ export const App = () => {
 
       <Coin
         onClick={() => {
-          void bridge.send("VKWebAppTapticSelectionChanged")
-
           addCounterValueMutation.mutate()
+
+          void bridge.send("VKWebAppTapticSelectionChanged").catch(() => {})
 
           if (counterValueQuery.data === 25 && musicRef.current) {
             musicRef.current.pause()
